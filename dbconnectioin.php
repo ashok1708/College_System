@@ -1,8 +1,7 @@
 <?php
-$servername = "mysql:host=localhost;dbname=jnvu";
+$servername = "<Your Database Server Name and Dababase name>";  //"mysql:host=localhost;dbname="<dababase_name>";
 $username = "root";
 $password = "";
-$database="jnvu";
 $database_pass="";
 session_start();
 
