@@ -7,12 +7,25 @@ if(isset($_POST['add'])){
     $student_year=$_POST['std_year'];
     $student_pass=$_POST['std_pass'];
 
-    $query =  "INSERT INTO student (name, pass, roll_no, year) VALUES ('$student_name','$student_pass','$student_roll','$student_year')";
+//    $query =  "INSERT INTO student (name, pass, roll_no, year) VALUES ('$student_name','$student_pass','$student_roll','$student_year')";
+//     if(mysqli_query($conn,$query)){
+//        header("location:adminPage.php?success=1");
+//    }
+    //using PDO method....
+    try{
+        $pdoConn->beginTransaction();
+        $stm=  $pdoConn->exec("INSERT INTO student (name, pass, roll_no, year) VALUES ('$student_name','$student_pass','$student_roll','$student_year')");
+        $pdoConn->commit();
+       // header("location:adminPage.php?success=1");
+        echo ("<script LANGUAGE='JavaScript'>
+    window.alert('Succesfully Added');
+    window.location.href='adminPage.php';
+    </script>");
 
-    if(mysqli_query($conn,$query)){
-        header("location:adminPage.php?success=1");
     }
-
+    catch (Exception $e) {
+      $pdoConn->rollBack();
+     }
 }
 ?>
 
@@ -52,6 +65,7 @@ if(isset($_POST['add'])){
     </form>
 </div>
 <style>
+
     .form-submit{
         margin-left: 30px;
     }

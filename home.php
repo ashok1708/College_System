@@ -16,6 +16,7 @@
     <?php
         session_start();
         $user_data = $_SESSION['user_data'];
+        var_dump($user_data);
      ?>
 
     <div class="main">

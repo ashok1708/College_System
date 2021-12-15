@@ -1,15 +1,6 @@
 <?php
 include_once 'dbconnectioin.php';
 
-//showing alert box for adding new student..
-if(isset($_GET['success'])){
-    echo '<script>alert(" New Student Added Succesfull!")</script>';
-}
-
-//showing alert box for updating student..
-if(isset($_GET['update'])){
-    echo '<script>alert(" Data Updation Succesfull!")</script>';
-}
 ?>
 
 <!DOCTYPE html>
@@ -30,10 +21,14 @@ if(isset($_GET['update'])){
     <a  id="add_student" href="addStudent.php" class="form-submit">Add Student</a>
     <div class="content">
         <?php
-        $res = mysqli_query($conn, "select* from student");
+//        $res = mysqli_query($conn, "select* from student");
+//             using pdo method...
+        $stm= $pdoConn->query("select* from student");
+        $res=$stm->fetchAll(PDO::FETCH_NUM);
         ?>
+
         <table class="table">
-            <thead >
+            <thead>
             <tr>
                 <th scope="col">Id</th>
                 <th scope="col">Name</th>
@@ -43,18 +38,18 @@ if(isset($_GET['update'])){
             </tr>
             </thead>
             <tbody>
-            <?php while ($row = $res->fetch_assoc()) {
+            <?php foreach ($res as $row) {
                 ?>
                 <tr>
 
-                    <th scope="row" ><?php echo $row['student_id']; ?></th>
-                    <td ><?php echo $row['name']; ?></td>
-                    <td ><?php echo $row['roll_no']; ?></td>
-                    <td ><?php echo $row['year']; ?></td>
-                    <td> <a href="adminPage.php?del=<?php echo $row['student_id'];?>" type="submit"  id="del_student" class="form-submit" value="Delete Data">Delete Data</a>
-                        <a href="updateData.php?update=<?php echo $row['student_id'];?>" type="submit"  id="del_student" class="form-submit" value="Edit Data">Edit Data</a>
+                    <th scope="row" > <?php echo $row[0]; ?> </th>
+                    <td> <?php echo $row[1]; ?> </td>
+                    <td> <?php echo $row[3]; ?> </td>
+                    <td> <?php echo $row[4]; ?> </td>
+                    <td> <a href="adminPage.php?del=<?php echo $row[0];?>" type="submit"  id="del_student" class="form-submit" value="Delete                          Data">Delete Data</a>
+                        <a href="updateData.php?update=<?php echo $row[0];?>" type="submit"  id="del_student" class="form-submit"                                       value="Edit Data">Edit Data</a>
                     </td>
-                    <
+
                 </tr>
                 <?php
             }
@@ -68,8 +63,21 @@ if(isset($_GET['update'])){
 <?php
 if (isset($_GET['del'])){
     $student_id=$_GET['del'];
-    $query=mysqli_query($conn,"delete from student where student_id=$student_id");
-    echo '<script>alert(" Data Deleted Succesfull!...")</script>';
+//    $query=mysqli_query($conn,"delete from student where student_id=$student_id")
+
+try {
+    $pdoConn->beginTransaction();
+    $stm = $pdoConn->exec("delete from student where student_id=$student_id");
+    $pdoConn->commit();
+    echo ("<script LANGUAGE='JavaScript'>
+    window.alert('Succesfully Deleted');
+    window.location.href='adminPage.php';
+    </script>");
+
+}
+catch (Exception $e) {
+    $pdoConn->rollBack();
+}
 }
 ?>
 </body>
@@ -99,3 +107,10 @@ if (isset($_GET['del'])){
         color: #ffffff;
     }
 </style>
+<!---->
+<!--<script>-->
+<!--    //for clearing URL....-->
+<!--    if(typeof window.history.pushState == 'function') {-->
+<!--        window.history.pushState({}, "Hide", "adminPage.php");-->
+<!--    }-->
+<!--</script>-->

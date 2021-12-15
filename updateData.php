@@ -3,8 +3,12 @@ include_once 'dbconnectioin.php';
 
 if(isset($_GET['update'])) {
     $student_id = $_GET['update'];
-    $student_data = mysqli_query($conn, "select* from student where student_id=$student_id");
-    $row = mysqli_fetch_array($student_data);
+//    $student_data = mysqli_query($conn, "select* from student where student_id=$student_id");
+//    $row = mysqli_fetch_array($student_data);
+    //Using PDO Method...
+    $stm= $pdoConn->query("select* from student where student_id=$student_id");
+    $row=$stm->fetch(PDO::FETCH_ASSOC);
+
 }
 //update data in db..
 if(isset($_POST['edit'])) {
@@ -14,11 +18,19 @@ if(isset($_POST['edit'])) {
     $student_year = $_POST['std_year'];
     $student_pass = $_POST['std_pass'];
 
-    $query="update student set name='$student_name', pass='$student_pass',roll_no='$student_roll',year='$student_year' where student_id=$student_id;";
-    if(mysqli_query($conn, $query)) {
-        header("location:adminPage.php?update=1");
-    }else{
-        echo "Error!!...";
+    //$query="update student set name='$student_name', pass='$student_pass',roll_no='$student_roll',year='$student_year' where student_id=$student_id;";
+    try {
+        $pdoConn->beginTransaction();
+        $stm = $pdoConn->exec("update student set name='$student_name', pass='$student_pass',roll_no='$student_roll',year='$student_year' where student_id=$student_id;");
+        $pdoConn->commit();
+        echo ("<script LANGUAGE='JavaScript'>
+    window.alert('Succesfully Upadate Data!...');
+    window.location.href='adminPage.php';
+    </script>");
+
+    }
+    catch (Exception $e) {
+        $pdoConn->rollBack();
     }
 }
 ?>
