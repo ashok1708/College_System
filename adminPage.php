@@ -107,10 +107,3 @@ catch (Exception $e) {
         color: #ffffff;
     }
 </style>
-<!---->
-<!--<script>-->
-<!--    //for clearing URL....-->
-<!--    if(typeof window.history.pushState == 'function') {-->
-<!--        window.history.pushState({}, "Hide", "adminPage.php");-->
-<!--    }-->
-<!--</script>-->

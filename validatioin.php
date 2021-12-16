@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once 'dbconnectioin.php';
 
 //if(mysqli_connect_errno()) {
@@ -22,8 +23,9 @@ if (isset($_POST['signin'])) {
     //using pdo method..
     $res=$pdoConn->query("select* from student where roll_no='$user_roll'and pass='$user_pass'");
     $result=$res->fetch(PDO::FETCH_ASSOC);
+
     if($result){
-        $_SESSION['user_data'] = $result;
+        $_SESSION['student_data'] = $result;
         header("location:home.php");
     } else {
         echo "failed ";
