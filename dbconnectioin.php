@@ -1,5 +1,5 @@
 <?php
-$servername = "<Your Database Server Name and Dababase name>";  //"mysql:host=localhost;dbname="<dababase_name>";
+$servername = "mysql:host=localhost;dbname=jnvu";  //"mysql:host=localhost;dbname="<dababase_name>";
 $username = "root";
 $password = "";
 $database_pass="";

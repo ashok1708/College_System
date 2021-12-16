@@ -3,8 +3,10 @@ include_once "dbconnectioin.php";
 session_start();
 $user_data = $_SESSION['student_data'];
 
-$curr_month= strtolower(date('M'));
-$stm=$pdoConn->query("select* from holiday where month='$curr_month'");
+
+$curr_month = date('m');
+
+$stm=$pdoConn->query("select* from holiday where month(holiday_date)='$curr_month'");
 $res=$stm->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
@@ -23,7 +25,6 @@ $res=$stm->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/home.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/home.css">
 </head>
@@ -114,7 +115,6 @@ $res=$stm->fetchAll(PDO::FETCH_ASSOC);
         <div class="time-table" id="time-table">
            <div class="js-calendar"></div>
             <div class="indication">
-
                 <div class="calendar-day indication-holiday">Holidays</div>
                 <div class="calendar-day indication-today">Today</div>
             </div>
@@ -202,8 +202,12 @@ $res=$stm->fetchAll(PDO::FETCH_ASSOC);
                 let event='';
                 if ( thisDay === new Date().getDate() ) classNames += ' is-active';
 
-                <?php foreach ($res as $event){ ?>
-                if( thisDay === <?php echo $event['date'];?> ) {
+                <?php foreach ($res as $event){
+                $m= $event['holiday_date'];
+                $time=strtotime($m);
+                $d=date("d",$time);
+                ?>
+                if( day === <?php echo $d;?> ) {
                     event+="<?php echo $event['event'] ?>";
 
                     classNames+= ' is-holiday';

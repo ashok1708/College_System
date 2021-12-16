@@ -91,12 +91,13 @@ if($res) {
         </thead>
     </table>
 
-    <div class="form-group form-button">
-        <a href="home.php" type="submit" name="signin" id="signin" class="form-submit" value="Log in">Back</a>
-    </div>
+
 <?php } else { ?>
     <span style="font-size: 24px; margin-left: 42%">Result Awaited...</span>
 <?php } ?>
+<div class="form-group form-button">
+    <a href="home.php" type="submit" name="signin" id="signin" class="form-submit" value="Log in">Back</a>
+</div>
  </div>
 </body>
 </html>
